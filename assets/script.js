@@ -1,4 +1,5 @@
 let APIKey = "840bae92b2c263c3e01358649c74dfbf";
+let savedCities;
 
 
 // $(document).ready(function(){
@@ -43,24 +44,18 @@ function displayCurrent(city){
 //             console.log(response);
 //             let forecastHeading = $("$five-day-h2").text("5-Day Forcast");
 //                 for(let i = 0; i <= 5; i++){
-//                     let fiveDayTemp = $("<p>").text(response.list[i].main.temp);
+//                     let fiveDayTemp = $("<p>").text(response.list[i].main[0].temp);
 //                     let weatherIconCode = response.list[i].weather[0].icon;
-//                     let weatherIconUrl = $("<img>").attr("src", `http://openweathermap.org/img/w/`)
+//                     let weatherIconUrl = $("<img>").attr("src", `http://openweathermap.org/img/w/${weatherIconCode}.png`)
 //                     let unixTimeStamp = response.list[i].dt;
 //                     let convertedDate = moment.unix(unixTimeStamp).utc().format("MM-DD");
 //                     console.log(convertedDate)
 //                     let fiveDayDateText = $("<h5>").text(convertedDate);
-//                     let 
+//                     let fiveDayHumidity = $("<p>").text(response.list[i].main[0].humidity)
                     
 
-//                 }
-
-             
-            
-
-         
+//                 }         
 //         })
-
 // }
 
 function displayUvIndex(lat, lon){
@@ -82,12 +77,20 @@ function submitCity(event){
     console.log(city);
     displayCurrent(city);
     setSearchHistory(city)
+    
 }
 
 
 function setSearchHistory(city){
-    let savedCity = localStorage.setItem("savedCity",JSON.stringify((city))) || [];
-    savedCity.unshift(city)
+    let savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
+    savedCitiesArray.unshift(city)
+    localStorage.setItem("savedCities",JSON.stringify(savedCitiesArray));
+    displaySearchHistory();
+}
+
+function displaySearchHistory(){
+    savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
+    console.log(savedCitiesArray)
 }
 
 $(".submit").on("click", submitCity)
