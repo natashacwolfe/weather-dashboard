@@ -100,38 +100,16 @@ function displaySearchHistory(){
     }
 }
 
-function savedCitySearch(city){
-    console.log("clicked!!")
-    let queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}&units=imperial`;
-    $.ajax({
-        url: queryURL,
-        method: "GET", 
-        dataType: "json"
-    })
-        .then(function(response){
-            // console.log(response);
-
-            let f = (response.main.temp * 9 / 5 + 32).toFixed(2);
-            let city = $("#city").text(response.name);
-            let currentTemp = $("#current-temp").text("Temperature: " + f);
-            let humidity = $("#current-humidity").text("Humidity: " + response.main.humidity);
-            let wind = $("#current-wind").text("Wind Speed: " + response.wind.speed);
-
-            let countryCode = response.sys.country;
-            let lon = response.coord.lon;
-            let lat = response.coord.lat;
-
-            displayUvIndex(lat, lon);
-            // displayFiveDay(lat, lon);
-        })
-            .catch(function(error){
-                console.log(error)
-            })
+function savedCitySearch(event){//needs CITY VAR!!!!!!!!!!
+    console.log("clicked!!!")
+    let city = $(event.target).html();
+    console.log(city);
+    displayCurrent(city);
 }
 
 
 $(".submit").on("click", submitCity)
-$(".historyBtn").on("click", savedCitySearch)
+$(historyDiv).on("click", savedCitySearch)
 
 
 // })
