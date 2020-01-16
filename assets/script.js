@@ -1,6 +1,6 @@
 let APIKey = "840bae92b2c263c3e01358649c74dfbf";
 let savedCities;
-
+let historyDiv = $(".search-history")
 
 // $(document).ready(function(){
 //     console.log("document loaded");
@@ -89,11 +89,49 @@ function setSearchHistory(city){
 }
 
 function displaySearchHistory(){
+    historyDiv.empty();
     savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
     console.log(savedCitiesArray)
+
+    for (let i = 0; i < savedCitiesArray.length; i++) {
+        let historyBtn = $("<button>").attr("class", "historyBtn");
+        historyBtn.text(savedCitiesArray[i]);
+        $(historyDiv).append(historyBtn);
+    }
 }
 
+function savedCitySearch(city){
+    console.log("clicked!!")
+    let queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}&units=imperial`;
+    $.ajax({
+        url: queryURL,
+        method: "GET", 
+        dataType: "json"
+    })
+        .then(function(response){
+            // console.log(response);
+
+            let f = (response.main.temp * 9 / 5 + 32).toFixed(2);
+            let city = $("#city").text(response.name);
+            let currentTemp = $("#current-temp").text("Temperature: " + f);
+            let humidity = $("#current-humidity").text("Humidity: " + response.main.humidity);
+            let wind = $("#current-wind").text("Wind Speed: " + response.wind.speed);
+
+            let countryCode = response.sys.country;
+            let lon = response.coord.lon;
+            let lat = response.coord.lat;
+
+            displayUvIndex(lat, lon);
+            // displayFiveDay(lat, lon);
+        })
+            .catch(function(error){
+                console.log(error)
+            })
+}
+
+
 $(".submit").on("click", submitCity)
+$(".historyBtn").on("click", savedCitySearch)
 
 
 // })
