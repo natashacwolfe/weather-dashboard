@@ -2,8 +2,10 @@ let APIKey = "840bae92b2c263c3e01358649c74dfbf";
 let currentWeatherIcon;
 let savedCities;
 let savedCitiesArray;
+let searchWrapper = $(".col1 wrapper")
 let historyDiv = $(".search-history");
-let fiveDayDiv = $(".five-day");
+let fiveDayDiv = $("#five-day")
+let cardWrapper = $(".card-wrapper");
 let fiveDayCard;
 let weatherIconCode;
 let weatherIconUrl;
@@ -47,7 +49,7 @@ function displayCurrent(city){
 }
 
 function displayFiveDay(lat, lon){
-    fiveDayDiv.empty();
+    cardWrapper.empty();
 
     let queryURL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKey}&units=imperial`
     $.ajax({
@@ -58,7 +60,7 @@ function displayFiveDay(lat, lon){
         .then(function(response){
             forecastHeading.attr("id", "forecastHeading")
             forecastHeading.text("5-Day Forcast");  
-            fiveDayDiv.append(forecastHeading);   
+            fiveDayDiv.prepend(forecastHeading);   
             // console.log(response);
                 for(let i = 0; i < response.list.length; i+=8){
                     let fiveDayDateText = $("<h5>");
@@ -75,7 +77,7 @@ function displayFiveDay(lat, lon){
                     fiveDayHumidity.text(response.list[i].main.humidity + "%")
                     
                     console.log("fiveday" + weatherIconUrl);
-                    fiveDayDiv.append(fiveDayCard);
+                    cardWrapper.append(fiveDayCard);
                     fiveDayCard.append(fiveDayDateText);
                     fiveDayCard.append(weatherIconUrl);
                     fiveDayCard.append(fiveDayTemp);
