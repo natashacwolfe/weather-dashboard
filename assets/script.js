@@ -1,6 +1,5 @@
 let APIKey = "840bae92b2c263c3e01358649c74dfbf";
 let currentWeatherIcon;
-let currentWeatherIconUrl = $("#currentWeatherIcon");
 let savedCities;
 let savedCitiesArray;
 let historyDiv = $(".search-history");
@@ -25,20 +24,20 @@ function displayCurrent(city){
         dataType: "json"
     })
         .then(function(response){
-            // console.log(response);
+            console.log(response);
 
             let f = (response.main.temp * 9 / 5 + 32).toFixed(2);
             let city = $("#city").text(response.name);
-            let currentTemp = $("#current-temp").text(`Temperature: ${f}`);
-            let humidity = $("#current-humidity").text("Humidity: " + response.main.humidity);
-            let wind = $("#current-wind").text("Wind Speed: " + response.wind.speed);
-            currentWeatherIcon = response.weather["0"].icon;
-            currentWeatherIconUrl.attr("src", `http://openweathermap.org/img/wn/${currentWeatherIcon}@2x.png`)
-            console.log(currentWeatherIconUrl)
+            let currentTemp = $("#current-temp").text("Temperature: " + f + String.fromCharCode(176) + " F");
+            let humidity = $("#current-humidity").text("Humidity: " + response.main.humidity + "%");
+            let wind = $("#current-wind").text("Wind Speed: " + response.wind.speed + " MPH");
+            currentWeatherIcon = response.weather[0].icon;
+            let currentWeatherIconUrl = $("<img>").attr("src", `http://openweathermap.org/img/w/${currentWeatherIcon}.png`);
             let countryCode = response.sys.country;
             let lon = response.coord.lon;
             let lat = response.coord.lat;
 
+            city.append(currentWeatherIconUrl);
             displayUvIndex(lat, lon);
             displayFiveDay(lat, lon);
         })
@@ -67,14 +66,15 @@ function displayFiveDay(lat, lon){
                     let fiveDayTemp = $("<p>");
 
                     fiveDayCard = $("<div>").attr("class", "fiveDayCard");
-                    fiveDayTemp.text(response.list[i].main.temp);
+                    fiveDayTemp.text(response.list[i].main.temp + String.fromCharCode(176) + " F");
                     weatherIconCode = response.list[i].weather[0].icon;
                     weatherIconUrl = $("<img>").attr("src", `http://openweathermap.org/img/w/${weatherIconCode}.png`)
                     unixTimeStamp = response.list[i].dt;
                     convertedDate = moment.unix(unixTimeStamp).utc().format("MM-DD");
                     fiveDayDateText .text(convertedDate);
-                    fiveDayHumidity.text(response.list[i].main.humidity)
-
+                    fiveDayHumidity.text(response.list[i].main.humidity + "%")
+                    
+                    console.log("fiveday" + weatherIconUrl);
                     fiveDayDiv.append(fiveDayCard);
                     fiveDayCard.append(fiveDayDateText);
                     fiveDayCard.append(weatherIconUrl);
@@ -109,15 +109,18 @@ function submitCity(event){
 function setSearchHistory(city){
     savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
     savedCitiesArray.unshift(city)
+    if (savedCitiesArray.length > 5){
+        console.log(savedCitiesArray);
+        savedCitiesArray.pop();
+    }
     localStorage.setItem("savedCities",JSON.stringify(savedCitiesArray));
     displaySearchHistory();
-    limitHistory();
 }
 
 function displaySearchHistory(){
     historyDiv.empty();
     savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
-    console.log(savedCitiesArray)
+    // console.log(savedCitiesArray)
 
     for (let i = 0; i < savedCitiesArray.length; i++) {
         let historyBtn = $("<button>").attr("class", "historyBtn");
@@ -125,14 +128,6 @@ function displaySearchHistory(){
         $(historyDiv).append(historyBtn);
     } 
   
-}
-
-function limitHistory(){
-    // console.log("last one from list")
-    if (savedCitiesArray.length > 5){
-        console.log(savedCitiesArray);
-        savedCitiesArray.pop();
-    }
 }
 
 function savedCitySearch(event){
