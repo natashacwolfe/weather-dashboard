@@ -1,4 +1,6 @@
 let APIKey = "840bae92b2c263c3e01358649c74dfbf";
+let currentWeatherIcon;
+let currentWeatherIconUrl = $("#currentWeatherIcon");
 let savedCities;
 let savedCitiesArray;
 let historyDiv = $(".search-history");
@@ -8,7 +10,8 @@ let weatherIconCode;
 let weatherIconUrl;
 let unixTimeStamp;
 let convertedDate 
-let forecastHeading = $("#five-day-h2");
+let forecastHeading = $("<h2>");
+
 
 
 // $(document).ready(function(){
@@ -26,18 +29,17 @@ function displayCurrent(city){
 
             let f = (response.main.temp * 9 / 5 + 32).toFixed(2);
             let city = $("#city").text(response.name);
-            let currentTemp = $("#current-temp").text(`Temperature:${f}`);
+            let currentTemp = $("#current-temp").text(`Temperature: ${f}`);
             let humidity = $("#current-humidity").text("Humidity: " + response.main.humidity);
             let wind = $("#current-wind").text("Wind Speed: " + response.wind.speed);
-            let currentWeatherIcon = response["weather"][0]["icon"];
-            let currentWeatherIconUrl = $("#currentWeatherIcon").attr("src", `http://openweathermap.org/img/wn/${currentWeatherIcon}@2x.png`)
+            currentWeatherIcon = response.weather["0"].icon;
+            currentWeatherIconUrl.attr("src", `http://openweathermap.org/img/wn/${currentWeatherIcon}@2x.png`)
             console.log(currentWeatherIconUrl)
             let countryCode = response.sys.country;
             let lon = response.coord.lon;
             let lat = response.coord.lat;
 
             displayUvIndex(lat, lon);
-            limitHistory();
             displayFiveDay(lat, lon);
         })
             .catch(function(error){
@@ -46,6 +48,8 @@ function displayCurrent(city){
 }
 
 function displayFiveDay(lat, lon){
+    fiveDayDiv.empty();
+
     let queryURL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKey}&units=imperial`
     $.ajax({
         url: queryURL,
@@ -53,14 +57,15 @@ function displayFiveDay(lat, lon){
         dataType: "json"
     }) 
         .then(function(response){
-            fiveDayDiv.empty();
-            console.log(response);
-            forecastHeading.text("5-Day Forcast");
+            forecastHeading.attr("id", "forecastHeading")
+            forecastHeading.text("5-Day Forcast");  
+            fiveDayDiv.append(forecastHeading);   
+            // console.log(response);
                 for(let i = 0; i < response.list.length; i+=8){
                     let fiveDayDateText = $("<h5>");
                     let fiveDayHumidity = $("<p>");
- 
                     let fiveDayTemp = $("<p>");
+
                     fiveDayCard = $("<div>").attr("class", "fiveDayCard");
                     fiveDayTemp.text(response.list[i].main.temp);
                     weatherIconCode = response.list[i].weather[0].icon;
@@ -69,18 +74,13 @@ function displayFiveDay(lat, lon){
                     convertedDate = moment.unix(unixTimeStamp).utc().format("MM-DD");
                     fiveDayDateText .text(convertedDate);
                     fiveDayHumidity.text(response.list[i].main.humidity)
-           
-                    // console.log(convertedDate)
-                    // console.log(fiveDayTemp)
-                    // console.log(fiveDayHumidity)
-                    // console.log(fiveDayDateText)
+
                     fiveDayDiv.append(fiveDayCard);
                     fiveDayCard.append(fiveDayDateText);
                     fiveDayCard.append(weatherIconUrl);
                     fiveDayCard.append(fiveDayTemp);
                     fiveDayCard.append(fiveDayHumidity);
-
-                }         
+                }    
         })
 }
 
@@ -102,36 +102,36 @@ function submitCity(event){
     let city = $(".search").val().trim();
     console.log(city);
     displayCurrent(city);
-    setSearchHistory(city)
-    
+    setSearchHistory(city);
 }
 
 
 function setSearchHistory(city){
-     savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
+    savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
     savedCitiesArray.unshift(city)
     localStorage.setItem("savedCities",JSON.stringify(savedCitiesArray));
     displaySearchHistory();
+    limitHistory();
 }
 
 function displaySearchHistory(){
     historyDiv.empty();
     savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
-    // console.log(savedCitiesArray)
+    console.log(savedCitiesArray)
 
     for (let i = 0; i < savedCitiesArray.length; i++) {
         let historyBtn = $("<button>").attr("class", "historyBtn");
         historyBtn.text(savedCitiesArray[i]);
         $(historyDiv).append(historyBtn);
     } 
-    limitHistory();
+  
 }
 
 function limitHistory(){
     // console.log("last one from list")
-    if (savedCitiesArray.length >= 5){
-        // console.log(savedCitiesArray);
-        savedCitiesArray.slice(0,5);
+    if (savedCitiesArray.length > 5){
+        console.log(savedCitiesArray);
+        savedCitiesArray.pop();
     }
 }
 
@@ -140,6 +140,9 @@ function savedCitySearch(event){
     // console.log(city);
     displayCurrent(city);
 }
+
+
+displaySearchHistory();
 
 
 $(".submit").on("click", submitCity)
