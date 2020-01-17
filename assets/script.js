@@ -1,7 +1,15 @@
 let APIKey = "840bae92b2c263c3e01358649c74dfbf";
 let savedCities;
 let savedCitiesArray;
-let historyDiv = $(".search-history")
+let historyDiv = $(".search-history");
+let fiveDayDiv = $(".five-day");
+let fiveDayCard;
+let weatherIconCode;
+let weatherIconUrl;
+let unixTimeStamp;
+let convertedDate 
+let forecastHeading = $("#five-day-h2");
+
 
 // $(document).ready(function(){
 //     console.log("document loaded");
@@ -18,10 +26,12 @@ function displayCurrent(city){
 
             let f = (response.main.temp * 9 / 5 + 32).toFixed(2);
             let city = $("#city").text(response.name);
-            let currentTemp = $("#current-temp").text("Temperature: " + f);
+            let currentTemp = $("#current-temp").text(`Temperature:${f}`);
             let humidity = $("#current-humidity").text("Humidity: " + response.main.humidity);
             let wind = $("#current-wind").text("Wind Speed: " + response.wind.speed);
-
+            let currentWeatherIcon = response["weather"][0]["icon"];
+            let currentWeatherIconUrl = $("#currentWeatherIcon").attr("src", `http://openweathermap.org/img/wn/${currentWeatherIcon}@2x.png`)
+            console.log(currentWeatherIconUrl)
             let countryCode = response.sys.country;
             let lon = response.coord.lon;
             let lat = response.coord.lat;
@@ -43,18 +53,32 @@ function displayFiveDay(lat, lon){
         dataType: "json"
     }) 
         .then(function(response){
+            fiveDayDiv.empty();
             console.log(response);
-            let forecastHeading = $("$five-day-h2").text("5-Day Forcast");
-                for(let i = 0; i <= 5; i++){
-                    let fiveDayTemp = $("<p>").text(response.list[i].main[0].temp);
-                    let weatherIconCode = response.list[i].weather[0].icon;
-                    let weatherIconUrl = $("<img>").attr("src", `http://openweathermap.org/img/w/${weatherIconCode}.png`)
-                    let unixTimeStamp = response.list[i].dt;
-                    let convertedDate = moment.unix(unixTimeStamp).utc().format("MM-DD");
-                    console.log(convertedDate)
-                    let fiveDayDateText = $("<h5>").text(convertedDate);
-                    let fiveDayHumidity = $("<p>").text(response.list[i].main[0].humidity)
-                    
+            forecastHeading.text("5-Day Forcast");
+                for(let i = 0; i < response.list.length; i+=8){
+                    let fiveDayDateText = $("<h5>");
+                    let fiveDayHumidity = $("<p>");
+ 
+                    let fiveDayTemp = $("<p>");
+                    fiveDayCard = $("<div>").attr("class", "fiveDayCard");
+                    fiveDayTemp.text(response.list[i].main.temp);
+                    weatherIconCode = response.list[i].weather[0].icon;
+                    weatherIconUrl = $("<img>").attr("src", `http://openweathermap.org/img/w/${weatherIconCode}.png`)
+                    unixTimeStamp = response.list[i].dt;
+                    convertedDate = moment.unix(unixTimeStamp).utc().format("MM-DD");
+                    fiveDayDateText .text(convertedDate);
+                    fiveDayHumidity.text(response.list[i].main.humidity)
+           
+                    // console.log(convertedDate)
+                    // console.log(fiveDayTemp)
+                    // console.log(fiveDayHumidity)
+                    // console.log(fiveDayDateText)
+                    fiveDayDiv.append(fiveDayCard);
+                    fiveDayCard.append(fiveDayDateText);
+                    fiveDayCard.append(weatherIconUrl);
+                    fiveDayCard.append(fiveDayTemp);
+                    fiveDayCard.append(fiveDayHumidity);
 
                 }         
         })
@@ -104,7 +128,7 @@ function displaySearchHistory(){
 }
 
 function limitHistory(){
-    console.log("last one from list")
+    // console.log("last one from list")
     if (savedCitiesArray.length >= 5){
         // console.log(savedCitiesArray);
         savedCitiesArray.slice(0,5);
