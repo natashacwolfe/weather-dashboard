@@ -68,13 +68,13 @@ function displayFiveDay(lat, lon){
                     let fiveDayTemp = $("<p>");
 
                     fiveDayCard = $("<div>").attr("class", "fiveDayCard");
-                    fiveDayTemp.text(response.list[i].main.temp + String.fromCharCode(176) + " F");
+                    fiveDayTemp.text("Temp: " + response.list[i].main.temp + String.fromCharCode(176) + " F");
                     weatherIconCode = response.list[i].weather[0].icon;
                     weatherIconUrl = $("<img>").attr("src", `http://openweathermap.org/img/w/${weatherIconCode}.png`)
                     unixTimeStamp = response.list[i].dt;
                     convertedDate = moment.unix(unixTimeStamp).utc().format("MM-DD");
                     fiveDayDateText .text(convertedDate);
-                    fiveDayHumidity.text(response.list[i].main.humidity + "%")
+                    fiveDayHumidity.text("Humidity: " + response.list[i].main.humidity + "%")
                     
                     console.log("fiveday" + weatherIconUrl);
                     cardWrapper.append(fiveDayCard);
