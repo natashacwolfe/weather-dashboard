@@ -1,56 +1,54 @@
-.page-container {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
+.search-container {
     display: flex;
     flex-flow: column wrap;
-    
+    flex: 0 0 30%;
+    height: 100%;
   }
-  
+  .display-weather-container {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 70%;
+    height: 100%;
+    margin-left: auto;
+  }
   .card-wrapper {
       display: flex;
       flex-flow: row nowrap;
   }
-  .col1 {
-      width: 30%;
-      height: 100%;
-      order: 1;
-  }
-
-  .col2 {
-      width: 70%;
-      height: 50%;
-      order: 3;
-  }
   
+  .flex-container {
+      display: flex;
+  }
   .fiveDayCard {
-    background-color: blue;
-    margin: 2px;
-    border-radius: 5%;
-    border: 2px black solid;
+    background-color: rgb(39, 81, 219);
+    margin: 5px;
+    border-radius: 2%;
     width: 25%;
     line-height: .25;
     text-align: center;
     color: white;
     font-size: 14px;
   }
+
 header {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
-    -webkit-flex-flow: row wrap;
-    align-content: flex-start;
+    justify-content: center;
     order: 1;
     background-color: rgb(65, 62, 62);
     padding: 10px;
     color: white;
+}
+.historyBtn {
+    line-height: 2;
+    background-color: white;
+    text-align: left;
+    border: 2px;
+    cursor: pointer;
 }
 
 .search-history {
     display: flex;
     flex-flow: column;
     height: 100%;
+    line-height: 1.5;
 }

@@ -111,7 +111,7 @@ function submitCity(event){
 function setSearchHistory(city){
     savedCitiesArray = JSON.parse(localStorage.getItem("savedCities")) || [];
     savedCitiesArray.unshift(city)
-    if (savedCitiesArray.length > 5){
+    if (savedCitiesArray.length > 8){
         console.log(savedCitiesArray);
         savedCitiesArray.pop();
     }
