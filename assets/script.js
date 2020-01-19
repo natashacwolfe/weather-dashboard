@@ -15,9 +15,9 @@ let forecastHeading = $("<h2>");
 
 
 
-// $(document).ready(function(){
-//     console.log("document loaded");
-
+$(document).ready(function(){
+    console.log("document loaded");
+    
 function displayCurrent(city){
     let queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}&units=imperial`;
     $.ajax({
@@ -38,6 +38,11 @@ function displayCurrent(city){
             let countryCode = response.sys.country;
             let lon = response.coord.lon;
             let lat = response.coord.lat;
+
+            $("#current-weather").css({
+                "border": "2px solid #c4c2c2",
+                "border-radius": "1%"
+            });
 
             city.append(currentWeatherIconUrl);
             displayUvIndex(lat, lon);
@@ -146,4 +151,4 @@ $(".submit").on("click", submitCity)
 $(historyDiv).on("click", savedCitySearch)
 
 
-// })
+})

@@ -16,6 +16,10 @@
       flex-flow: row nowrap;
   }
   
+  #current-weather {
+    padding: 1%;
+    margin-top: 2%;
+  }
   .flex-container {
       display: flex;
   }
