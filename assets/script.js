@@ -30,6 +30,9 @@ function displayCurrent(city){
 
             let f = (response.main.temp * 9 / 5 + 32).toFixed(2);
             let city = $("#city").text(response.name);
+            unixTimeStamp = response.dt;
+            convertedDate = moment.unix(unixTimeStamp).utc().format("MM-DD");
+            let currentDate = $(".date").text(convertedDate)
             let currentTemp = $("#current-temp").text("Temperature: " + f + String.fromCharCode(176) + " F");
             let humidity = $("#current-humidity").text("Humidity: " + response.main.humidity + "%");
             let wind = $("#current-wind").text("Wind Speed: " + response.wind.speed + " MPH");
@@ -40,11 +43,11 @@ function displayCurrent(city){
             let lat = response.coord.lat;
 
             $("#current-weather").css({
-                "border": "2px solid #c4c2c2",
+                "border": "1px solid #c4c2c2",
                 "border-radius": "2%"
             });
 
-            city.append(currentWeatherIconUrl);
+            currentDate.append(currentWeatherIconUrl);
             displayUvIndex(lat, lon);
             displayFiveDay(lat, lon);
         })

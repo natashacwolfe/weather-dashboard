@@ -26,13 +26,18 @@ body {
       display: flex;
       flex-flow: row nowrap;
   }
-  
+  .city {
+      display: inline-block;
+  }
   .col2 {
       margin: 2%;
   }
 
   #current-weather {
     padding: 1%;
+  }
+  .date {
+      display: inline;
   }
   .flex-container {
       display: flex;
@@ -61,15 +66,25 @@ header {
     line-height: 2;
     background-color: white;
     text-align: left;
-    border: 2px;
+    border: 1px;
     cursor: pointer;
     margin: 0 4%;
+    padding: 3%;
+    border: .25px solid #c4c2c2;
+    border-top: none;
+}
+.historyBtn:first-child {
+    border-top: .25px solid #c4c2c2;
+}
+.historyBtn:hover {
+    transition: background-color .05s ease-in-out;
+    background-color: rgb(245,245,245, .05);
 }
 /* search input */
 .search {
     width: 60%;
     border-radius: 2%;
-    border: 1.5px solid #c4c2c2;
+    border: 1px solid #c4c2c2;
     line-height: 2;
 }
 /* form margin to line up with history bar */
@@ -93,8 +108,15 @@ header {
     background-color: rgb(0, 125, 255);
     color: white;
     line-height: 2;
+    position: absolute;
+    border: 2px solid;
+    border-radius: 18%;
+    cursor: pointer;
 }
-
+.submit:hover {
+    transition: border-color 1s ease;
+    border-color: rgb(0, 125, 255, .05);
+}
 .uv-index-text {
     display: inline-block;
     margin: 0;
@@ -104,3 +126,19 @@ header {
     color: white;
     border-radius: 2%;
 }
+
+@media (min-width: 600px), (max-width: 800px) {
+    .card-wrapper {
+        display: flex;
+        flex-flow: row wrap;
+    }
+  }
+
+  /* smart phones */
+
+  @media(min-width: 320px), (max-width: 667px) {
+    .fiveDayCard {
+        width: 35%;
+        line-height: 1;
+      }
+  }
