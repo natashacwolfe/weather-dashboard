@@ -4,8 +4,7 @@
 
 A weather dashboard that displays current weather, five day forecast, and your search history. The search history makesup to 8 cities readily available to search again. 
 
-
-![Weather Dashboard](assets.images.screenshot.png)
+![Weather](/assets/images/screenshot.png)
 
 ## Tech/framework used
 * HTML
