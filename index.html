@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/style.css">
+    <script src="https://kit.fontawesome.com/028866364e.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 <body>
@@ -13,8 +14,9 @@
         <div class="search-container">
             <div class="col1 wrapper">
                 <form class="search-bar">
+                    <h3 id="search-heading">Search for a city: </h3>
                     <input type="text" class="search">
-                    <button class="submit">search</button>
+                    <button class="submit"><i class="fas fa-search"></i> </button>
                 </form>
     
                 <div class="search-history"></div>
@@ -23,11 +25,11 @@
         <div class="display-weather-container">       
             <div class="col2 weather" id="current-weather">
                 <div class="city"><h2 id="city"></h2></div>
-
+                <div class="date"></div>
                 <div class="current-temp"><p id="current-temp"></p></div>
                 <div class="current-humidity"><p id="current-humidity"></p></div>
                 <div class="current-wind"><p id="current-wind"></p></div>
-                <div class="uv-index"><p id="uv-index"></p></div>
+                <div class="uv-index"><p class="uv-index-text"></p><span id="uv-index-number"></span></div>
             </div>
             <div class="col2 five" id="five-day">
                 <div class="card-wrapper"></div>
@@ -35,6 +37,7 @@
         </div>
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="assets/script.js"></script>
 

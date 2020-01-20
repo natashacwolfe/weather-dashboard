@@ -41,7 +41,7 @@ function displayCurrent(city){
 
             $("#current-weather").css({
                 "border": "2px solid #c4c2c2",
-                "border-radius": "1%"
+                "border-radius": "2%"
             });
 
             city.append(currentWeatherIconUrl);
@@ -100,7 +100,8 @@ function displayUvIndex(lat, lon){
     })  
         .then(function(response){
             // console.log(response);
-            let uvIndex = $("#uv-index").text("UV Index: " + response.value)
+            let uvTitle = $(".uv-index-text").text("UV Index:");
+            let uvIndex = $("#uv-index-number").text(response.value)
         })
 }
 
