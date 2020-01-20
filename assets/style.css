@@ -127,16 +127,10 @@ header {
     border-radius: 2%;
 }
 
-@media (min-width: 600px), (max-width: 800px) {
-    .card-wrapper {
-        display: flex;
-        flex-flow: row wrap;
-    }
-  }
 
   /* smart phones */
 
-  @media(min-width: 320px), (max-width: 667px) {
+  @media (min-width: 320px), (max-width: 667px) {
     .fiveDayCard {
         width: 35%;
         line-height: 1;
