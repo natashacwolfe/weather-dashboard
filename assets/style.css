@@ -114,7 +114,7 @@ header {
     cursor: pointer;
 }
 .submit:hover {
-    transition: border-color 1s ease;
+    transition: border-color .5s ease-in-out;
     border-color: rgb(0, 125, 255, .05);
 }
 .uv-index-text {
