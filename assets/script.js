@@ -18,6 +18,7 @@ $(document).ready(function(){
 
     // current day display 
     function displayCurrent(city){
+      
         let queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}&units=imperial`;
         $.ajax({
             url: queryURL,
@@ -118,6 +119,7 @@ $(document).ready(function(){
         // grabbing the value entered into the form
         let city = $(".search").val().trim();
         console.log(city);
+
         displayCurrent(city);
         setSearchHistory(city);
     }
